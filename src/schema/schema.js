@@ -58,6 +58,12 @@ module.exports = new GraphQLSchema({
     name: 'Query',
     description: '...',
     fields: () => ({
+      hello: {
+        type: GraphQLString,
+        resolve: (root, args) => {
+          return 'Hello Mbut';
+        }
+      },
       event: {
         type: EventType,
         args:{
