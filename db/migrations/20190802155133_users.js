@@ -14,6 +14,8 @@ exports.up = async db => {
     table.dateTime('date_of_birth');
     table.string('origin');
     table.string('status');
+    table.boolean('is_phone_verified');
+    table.boolean('is_email_verified');
     table.string('created_by');
     table.string('updated_by');
     table.timestamps(true, true);

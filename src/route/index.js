@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const {
-  login,
+  // login,
   refreshToken,
-  register
+  // register
 } = require('../controllers/auth');
+const {
+  register,
+  login
+} = require('controllers');
 const authMiddleware = require('../middleware/auth');
 
 router.get('/', async (req,res) => {

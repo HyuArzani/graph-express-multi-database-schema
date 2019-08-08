@@ -2,9 +2,10 @@ const jwt = require('jsonwebtoken')
 const config = require('configs')
 
 module.exports = (req,res,next) => {
-  const token = req.body.token || req.query.token || req.headers['x-access-token']
+  const Bearer = req.body.authorization || req.query.authorization || req.headers['authorization']
   // decode token
-  if (token) {
+  if (Bearer) {
+    const token = Bearer.replace('Bearer ', '');
     // verifies secret and checks exp
     jwt.verify(token, config.secret, function(err, decoded) {
         if (err) {
@@ -18,7 +19,7 @@ module.exports = (req,res,next) => {
     // return an error
     return res.status(403).send({
         "error": true,
-        "message": 'No token provided.'
+        "message": 'No Authorization provided.'
     });
   }
 }

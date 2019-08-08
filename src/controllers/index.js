@@ -1,8 +1,8 @@
+const register = require('./Auth/register')
+const login = require('./Auth/login');
 
-
-function test({req, res}) {
-  return res.send('Test endpoint');
+module.exports = {
+  register,
+  login,
 }
-
-module.exports = test;
 
