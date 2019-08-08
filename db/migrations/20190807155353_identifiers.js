@@ -2,12 +2,12 @@
 exports.up = async function(knex) {
   await knex.schema.createTable('identifiers', table => {
     table.uuid('identifierId').notNullable().primary();
-    table.string('userId').unique();
+    table.uuid('userId').references('userId').inTable('users').notNull().onDelete('cascade');
     table.string('device');
     table.string('os');
     table.string('location');
     table.string('status');
-    table.timestamps();
+    table.timestamps(true, true);
   })
 };
 

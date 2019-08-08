@@ -2,7 +2,7 @@
 exports.up = async function(knex) {
   await knex.schema.createTable('addresses', table => {
     table.uuid('addressId').notNullable().primary();
-    table.string('userId').unique();
+    table.uuid('userId').references('userId').inTable('users').notNull().onDelete('cascade');
     table.string('nation');
     table.string('province');
     table.string('cities');
@@ -15,7 +15,7 @@ exports.up = async function(knex) {
     table.string('status');
     table.string('created_by');
     table.string('updated_by');
-    table.timestamps();
+    table.timestamps(true, true);
   })
 };
 

@@ -1,7 +1,12 @@
+require('babel-register')
+require("babel-core/register");
+require("babel-polyfill");
+
 require('dotenv').config();
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+// const expressValidator = require('express-validator');
 const app = express();
 
 const router = require('./src/route');
@@ -12,6 +17,7 @@ if(process.env.NODE_ENV == 'development'){
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(expressValidator());
 app.use(graph);
 app.use(router);
 app.listen(process.env.PORT, ()=>{

@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { login, refreshToken } = require('../controllers/auth');
+const {
+  login,
+  refreshToken,
+  register
+} = require('../controllers/auth');
 const authMiddleware = require('../middleware/auth');
 
 router.get('/', async (req,res) => {
@@ -9,6 +13,7 @@ router.get('/', async (req,res) => {
 
 router.post('/login', login)
 router.post('/token', refreshToken)
+router.post('/register', register)
 
 router.get('/secure', authMiddleware, (req,res) => {
   console.log('SIJEMBUT = ', req);

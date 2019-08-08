@@ -16,7 +16,7 @@ exports.up = async db => {
     table.string('status');
     table.string('created_by');
     table.string('updated_by');
-    table.timestamps();
+    table.timestamps(true, true);
   })
 };
 
