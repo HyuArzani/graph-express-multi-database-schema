@@ -6,6 +6,7 @@ require('dotenv').config();
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 // const expressValidator = require('express-validator');
 const app = express();
 
@@ -14,6 +15,7 @@ const graph = require('./src/graph');
 
 if(process.env.NODE_ENV == 'development'){
   app.use(logger('dev'));
+  app.use(cors());
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

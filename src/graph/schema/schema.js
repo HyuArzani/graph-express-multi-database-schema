@@ -7,48 +7,24 @@ const {
   GraphQLSchema,
 } = require('graphql');
 
-const LatestEvent = new GraphQLObjectType({
-  name: 'schedule',
-  description: '...',
-  fields: () => ({
-    id: {
-      type: GraphQLInt,
-      resolve: root => root.eventId
-    },
-    name: {
-      type: GraphQLString,
-      resolve: root => root.eventName
-    },
-    date: {
-      type: GraphQLString,
-      resolve: root => root.eventDate
-    }
-  })
-})
+const tryLogin = require('controllers/auth/login');
+const tryRegister = require('controllers/auth/register');
 
-const EventType = new GraphQLObjectType({
-  name: 'event',
+const TokenType = new GraphQLObjectType({
+  name: 'token',
   description: '...',
   fields: () => ({
-    id: {
+    userId: {
       type: GraphQLString,
-      resolve: root => root.eventId
+      resolve: root => root.data.userId
     },
-    name: { 
+    token: { 
       type: GraphQLString,
-      resolve: root => root.eventName
+      resolve: root => root.data.token
     },
-    imageUrl: { 
+    refreshToken: { 
       type: GraphQLString,
-      resolve: root => root.eventImageUrl
-    },
-    description: { 
-      type: GraphQLString,
-      resolve: root => root.eventDescription
-    },
-    term: { 
-      type: GraphQLString,
-      resolve: root => root.eventTerm
+      resolve: root => root.data.refreshToken
     },
   })
 });
@@ -64,26 +40,50 @@ module.exports = new GraphQLSchema({
           return 'Hello Mbut';
         }
       },
-      event: {
-        type: EventType,
+    })
+  }),
+  mutation: new GraphQLObjectType({
+    name: "Mutation",
+    description: '...',
+    fields: () => ({
+      login: {
+        type: TokenType,
         args:{
-          id: { type: GraphQLInt }
+          username: { type: GraphQLString },
+          password: { type: GraphQLString },
+          origin: { type: GraphQLString },
+          device: { type: GraphQLString },
+          os: { type: GraphQLString },
+          location: { type: GraphQLString },
         },
-        resolve: (root, args) => fetch(
-          `${process.env.URL_EVENT}${args.id}`
-        )
-        .then(response => response.json())
+        resolve: async (root, args) => {
+          let result = await tryLogin(args);
+          return result;
+        }
       },
-      latest: {
-        type: GraphQLList(LatestEvent),
-        args: {
-          limit: { type: GraphQLInt },
+      register: {
+        type: TokenType,
+        args:{
+          email: { type: GraphQLString },
+          phone: { type: GraphQLString },
+          password: { type: GraphQLString },
+          fullName: { type: GraphQLString },
+          identityNumber: { type: GraphQLString },
+          nation: { type: GraphQLString },
+          cities: { type: GraphQLString },
+          gender: { type: GraphQLString },
+          dateOfBirth: { type: GraphQLString },
+          origin: { type: GraphQLString },
+
+          device: { type: GraphQLString },
+          os: { type: GraphQLString },
+          location: { type: GraphQLString },
         },
-        resolve: (root, args) => fetch(
-          `${process.env.URL_LATEST}${args.limit}`
-        )
-        .then(response => response.json())
+        resolve: async (root, args) => {
+          let result = await tryRegister(args);
+          return result;
+        }
       }
     })
-  })
+  }),
 })

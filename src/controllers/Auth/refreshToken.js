@@ -8,27 +8,7 @@ const R = require('ramda');
 // const { InsertHelper } = require('functions/dbFunctions');
 const knex = require('knex')(knexConfig.development);
 
-const login = (req, res) => {
-  const postData = req.body;
-  const user = {
-      "email": postData.email,
-      "name": postData.name
-  }
-  // do the database authentication here, with user name and password combination.
-  const token = jwt.sign(user, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_LIFE})
-  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_LIFE})
-  const response = {
-      "status": "Logged in",
-      "token": token,
-      "refreshToken": refreshToken,
-  }
-  // get users from database
-  // assert.property(req, 'knex')
-  // tokenList[refreshToken] = response
-  res.status(200).json(response);
-}
-
-const refreshToken = (req, res) => {
+const tryRefreshToken = (req, res) => {
   // refresh the damn token
   const postData = req.body
   // if refresh token exists
@@ -49,7 +29,4 @@ const refreshToken = (req, res) => {
   }
 }
 
-module.exports = {
-  login,
-  refreshToken,
-}
+module.exports = tryRefreshToken

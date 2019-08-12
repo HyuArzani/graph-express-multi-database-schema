@@ -5,6 +5,7 @@
       "root": ["./src"],
       "alias": {
         "middleware": "./src/middleware",
+        "rest": "./src/rest",
         "graph": "./src/graph",
         "functions": "./src/functions",
         "controllers": "./src/controllers",

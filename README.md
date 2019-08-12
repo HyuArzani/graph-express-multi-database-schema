@@ -1,4 +1,4 @@
-# EXAMPLE OF GRAPHQL APP USING EXPRESS FOR MULTIPLE DATABASE SCHEMA & USING OAUTH2
+# EXAMPLE OF GRAPHQL APP USING EXPRESS
 
 ## How to run
 
@@ -12,19 +12,24 @@ you need nodemon to serve
 
 create .env file with params:
 
-    PORT={your port}
-    URL_EVENT={some event url}
-    URL_LATEST={some latest url}
+    TOKEN_SECRET={some secret to generate token}
+    REFRESH_TOKEN_SECRET={some secret to generate refresh token}
+    TOKEN_LIFE={how long token can survive}
+    REFRESH_TOKEN_LIFE={how long refresh token can survive}
 
 then you can run
 
-`npm run serve`
+`npm start`
 
 or you can directly run the server using
 
-`node server.js`
+`node index.js`
 
 that's all
+
+PS: to use database for user data, you can go to ./db
+there is knexfile.js that contain database settings, change according to your local database settings
+Docs: http://knexjs.org/
 
 ## Debug
 
