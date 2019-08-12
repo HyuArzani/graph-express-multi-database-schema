@@ -9,6 +9,7 @@ const {
 
 const tryLogin = require('controllers/auth/login');
 const tryRegister = require('controllers/auth/register');
+const tryRefreshToken = require('controllers/auth/refreshToken');
 
 const TokenType = new GraphQLObjectType({
   name: 'token',
@@ -81,6 +82,16 @@ module.exports = new GraphQLSchema({
         },
         resolve: async (root, args) => {
           let result = await tryRegister(args);
+          return result;
+        }
+      },
+      refreshToken: {
+        type: TokenType,
+        args:{
+          refreshToken: { type: GraphQLString },
+        },
+        resolve: async (root, args) => {
+          let result = await tryRefreshToken(args);
           return result;
         }
       }

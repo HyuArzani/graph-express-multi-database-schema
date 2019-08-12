@@ -12,7 +12,7 @@ router.get('/', async (req,res) => {
 })
 
 router.post('/login', login)
-router.post('/token', refreshToken)
+router.post('/refreshToken', refreshToken)
 router.post('/register', register)
 
 router.get('/secure', authMiddleware, (req,res) => {
