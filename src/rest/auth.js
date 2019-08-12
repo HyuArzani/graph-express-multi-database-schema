@@ -69,13 +69,14 @@ const refreshToken = async (req, res) => {
   // refresh the damn token
   try {
     params = {
-      refreshToken: await getParam(req, 'body', 'refreshToken', true),
+      refreshToken: await getParam(req, 'headers', 'refresh-token', true),
     };
   } catch(e) {
-    res.status(422).json({status: 'FAILED', message: 'Missing refreshToken parameters'});
+    res.status(422).json({status: 'FAILED', message: e.message});
+    return;
   }
   try {
-    const result = await tryRefreshToken(params)
+    const result = await tryRefreshToken(params.refreshToken)
     res.status(result.code).json({status: result.status, data: result.data});
   } catch(error) {
     res.status(error.code).json({status: error.status, message: error.message});

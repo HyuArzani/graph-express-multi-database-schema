@@ -90,8 +90,9 @@ module.exports = new GraphQLSchema({
         args:{
           refreshToken: { type: GraphQLString },
         },
-        resolve: async (root, args) => {
-          let result = await tryRefreshToken(args);
+        resolve: async (root, args, context) => {
+          const params = args.refreshToken ? args.refreshToken : context.headers["refresh-token"];
+          let result = await tryRefreshToken(params);
           return result;
         }
       }

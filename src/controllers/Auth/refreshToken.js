@@ -1,7 +1,4 @@
 require('dotenv').config();
-const uuid = require('uuid/v1');
-const hash = require('object-hash');
-const { getParam } = require('functions/common');
 const jwt = require('jsonwebtoken');
 const knexConfig = require('db/knexfile');
 const R = require('ramda');
@@ -12,7 +9,14 @@ const knex = require('knex')(knexConfig.development);
 const tryRefreshToken = async (params) => {
   let tokens = [];
   let users = {};
-  jwt.verify(params.refreshToken, process.env.REFRESH_TOKEN_SECRET, function(err, decoded) {
+  const refreshToken = params;
+  if(!refreshToken)
+    return Promise.reject({
+      code: 403,
+      status: 'FAILED',
+      message: 'Missing refresh-token in headers'
+    })
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, function(err, decoded) {
     if (err) {
       return Promise.reject({
         code: 403,
@@ -25,7 +29,7 @@ const tryRefreshToken = async (params) => {
   });
 
   try {
-    tokens = await knex('tokens').where('refreshToken', params.refreshToken);
+    tokens = await knex('tokens').where('refreshToken', refreshToken);
   } catch(e) {
     return Promise.reject({
       code: 500,
@@ -45,7 +49,7 @@ const tryRefreshToken = async (params) => {
   let response = {
     userId: users.userId,
     token: jwt.sign({userId: users.userId, email: users.email, phone: users.phone, full_name: users.fullName}, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_LIFE}),
-    refreshToken: params.refreshToken
+    refreshToken: refreshToken
   };
 
   try {
@@ -66,7 +70,6 @@ const tryRefreshToken = async (params) => {
     status: 'OK',
     data: response
   });
-  // res.status(200).json(response);
 }
 
 module.exports = tryRefreshToken
